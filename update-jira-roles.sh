@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function CHECK_PACKAGES {
 
 	if [[ "$SYSTEM" == "DEBIAN" ]]; then
@@ -80,9 +79,18 @@ GET_ROLES_FROM_CSV (){
 	
 	local FILE="$1"
 
-		#for i in "$FILE".xlsx; do  libreoffice --headless --convert-to csv "$i" ; done
+		for i in "$FILE"; do  libreoffice --headless --convert-to csv "$i" ; done
+		
+		CSV=$(echo "$FILE" | sed 's/.xlsx/.csv/' )
+		echo "$CSV"
+		while read l
+		
+			do
+					echo "$l"
+			done < "$CSV"
+
 
 }
 
-GET_ROLES "$1"
+#GET_ROLES "$1"
 GET_ROLES_FROM_CSV "$1"
