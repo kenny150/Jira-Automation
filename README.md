@@ -1,5 +1,13 @@
 # MIGRAÇÃO AUTOMATICA DE ROLES ENTRE INSTANCIAS DO JIRA USANDO METODOS HTTP
 
+# REQUISITOS
+
+Instale os programas abaixo
+
+DEBIAN : sudo apt-get install jq postman curl which figlet
+
+REDHAT : sudo yum install jq postman curl which figlet
+
 # VERSÃO 1.0.0
 
 Função GET_ROLES
