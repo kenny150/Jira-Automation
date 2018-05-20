@@ -86,7 +86,7 @@ GET_ROLES_FROM_CSV (){
 		while read l
 		
 			do
-					echo "$l"
+				echo "$l"
 			done < "$CSV"
 
 
