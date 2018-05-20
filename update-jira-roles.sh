@@ -20,25 +20,23 @@ JQ=$(which jq)
 echo -e "CHECANDO PACOTES ... \n"
 sleep 2
 echo "$CURL" | grep "/"
-	if [[ "$?" -ne 0 ]]; then
-		CHECK_PACKAGES
-	else echo -e "PACOTE CURL JÁ INSTALADO ... \n"
+
+if [[ "$?" -ne 0 ]]; then
+  CHECK_PACKAGES
+else echo -e "PACOTE CURL JÁ INSTALADO ... \n"
 	
-	fi
+fi
 
 echo "$JQ" | grep "/"
-	if [[ "$?" -ne 0 ]]; then
-		CHECK_PACKAGES
-	else echo -e "PACOTE JQ JÁ INSTALADO\n"
-	
-	fi
+  if [[ "$?" -ne 0 ]]; then
+    CHECK_PACKAGES
+  else echo -e "PACOTE JQ JÁ INSTALADO\n"
+  fi
 
-if [ -f "/etc/redhat-release" ]; then 
-	SYSTEM="REDHAT"
-	# echo "Distribuição ${SYSTEM}"
-else SYSTEM="DEBIAN" 
-	# echo "Distribuição ${SYSTEM}"
-fi
+  if [ -f "/etc/redhat-release" ]; then 
+    SYSTEM="REDHAT"
+  else SYSTEM="DEBIAN"
+  fi
 
 X="#############################################################################################"
 
@@ -49,33 +47,29 @@ PROJECT="$1"
 
 [[ ! -z "$PROJECT" ]]  && echo "PROJETO SELECIONADO: ${1}" || { echo -e "ERRO: INFORME O NOME DO PROJETO\n\n$HELP" ; exit 1 ; }
 
-
-
 GET_ROLES () {
-	
-	local SERVER='http://192.168.0.6'
-	local PORT='8080'
-	local ADDRESS=${SERVER}:${PORT}
-	local USERNAME='alvkennedy'
-	declare -g PROJECT=$1 
-	local PASSWORD='12345678'
-	local CURL=$(which curl)
-	local JQ=$(which jq)	
-	local ROLES=$("$CURL" -H "Accept: application/json" -u "$USERNAME":"$PASSWORD" -XGET \
-				"$ADDRESS"/rest/api/2/project/"$PROJECT"/role | "$JQ" '.' | grep -v "{" | grep -v "}" )
-	local NUM=$(echo "$ROLES" | wc -l)
+  local SERVER='http://192.168.0.6'
+  local PORT='8080'
+  local ADDRESS=${SERVER}:${PORT}
+  local USERNAME='alvkennedy'
+  declare -g PROJECT=$1 
+  local PASSWORD='12345678'
+  local CURL=$(which curl)
+  local JQ=$(which jq)	
+  local ROLES=$("$CURL" -H "Accept: application/json" -u "$USERNAME":"$PASSWORD" -XGET \
+  "$ADDRESS"/rest/api/2/project/"$PROJECT"/role | "$JQ" '.' | grep -v "{" | grep -v "}" )
+  local NUM=$(echo "$ROLES" | wc -l)
     
-    	for (( i = 1; i < "$NUM"; i++ )); do
-    		echo "$ROLES" | tail -n "$NUM" | awk -F ':' '{printf $1}' | sed 's/\ //g;s/\"//;s/\"/,/g;s/\,//;s/[\,]$/\n&/;s/[,]$//' > $PWD/lista.csv
-    		echo -e "\n$ROLES" | tail -n "$NUM" | awk -F '/' '{printf $NF}' | sed 's/\"//g' >> $PWD/lista.csv
-    	done
+    for (( i = 1; i < "$NUM"; i++ )); do
+      echo "$ROLES" | tail -n "$NUM" | awk -F ':' '{printf $1}' | sed 's/\ //g;s/\"//;s/\"/,/g;s/\,//;s/[\,]$/\n&/;s/[,]$//' > $PWD/lista.csv
+      echo -e "\n$ROLES" | tail -n "$NUM" | awk -F '/' '{printf $NF}' | sed 's/\"//g' >> $PWD/lista.csv
+    done
 
-    	if [[ "$(which figlet)" ]]; then
-    		figlet "TERMINADO :)"
-    	else 
-    		echo "TERMINADO :) "
-    	fi
-
+    if [[ "$(which figlet)" ]]; then
+      figlet "TERMINADO :)"
+    else 
+      echo "TERMINADO :) "
+    fi
 }
 
 GET_ROLES_FROM_CSV (){
