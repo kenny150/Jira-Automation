@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "$X"
+echo "Inicinado ... "
+echo "$X"
+
 function CHECK_PACKAGES {
 
 	if [[ "$SYSTEM" == "DEBIAN" ]]; then
@@ -13,26 +17,27 @@ function CHECK_PACKAGES {
 CURL=$(which curl)
 JQ=$(which jq)
 
-echo "Checando pacotes ... "
+echo -e "CHECANDO PACOTES ... \n"
+sleep 2
 echo "$CURL" | grep "/"
 	if [[ "$?" -ne 0 ]]; then
 		CHECK_PACKAGES
-	else echo "Pacote curl já instalado ... "
+	else echo -e "PACOTE CURL JÁ INSTALADO ... \n"
 	
 	fi
 
 echo "$JQ" | grep "/"
 	if [[ "$?" -ne 0 ]]; then
 		CHECK_PACKAGES
-	else echo "Pacote jq já instalado"
+	else echo -e "PACOTE JQ JÁ INSTALADO\n"
 	
 	fi
 
 if [ -f "/etc/redhat-release" ]; then 
 	SYSTEM="REDHAT"
-	echo "Distribuição ${SYSTEM}"
+	# echo "Distribuição ${SYSTEM}"
 else SYSTEM="DEBIAN" 
-	echo "Distribuição ${SYSTEM}"
+	# echo "Distribuição ${SYSTEM}"
 fi
 
 X="#############################################################################################"
@@ -42,11 +47,9 @@ HELP=$(echo "$X" && echo -e "INSTRUÇÕES\n\nPELO TERMINAL EXECUTE: \"bash updat
 
 PROJECT="$1"
 
-[[ ! -z "$PROJECT" ]]  && echo "Projeto selecionado: ${1}" || { echo -e "ERRO: INFORME O NOME DO PROJETO\n\n$HELP" ; exit 1 ; }
+[[ ! -z "$PROJECT" ]]  && echo "PROJETO SELECIONADO: ${1}" || { echo -e "ERRO: INFORME O NOME DO PROJETO\n\n$HELP" ; exit 1 ; }
 
-echo "$X"
-echo "Inicinado ... "
-echo "$X"
+
 
 GET_ROLES () {
 	
@@ -82,7 +85,7 @@ GET_ROLES_FROM_CSV (){
 		for i in "$FILE"; do  libreoffice --headless --convert-to csv "$i" ; done
 		
 		CSV=$(echo "$FILE" | sed 's/.xlsx/.csv/' )
-		echo "$CSV"
+		echo "CONVERTIDO PARA : $CSV"
 		while read l
 		
 			do
