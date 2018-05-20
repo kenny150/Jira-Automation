@@ -72,21 +72,17 @@ GET_ROLES () {
     fi
 }
 
-GET_ROLES_FROM_CSV (){
-	
-	local FILE="$1"
+GET_ROLES_FROM_CSV (){	
+  local FILE="$1"
 
-		for i in "$FILE"; do  libreoffice --headless --convert-to csv "$i" ; done
+     for i in "$FILE"; do  libreoffice --headless --convert-to csv "$i" ; done
 		
-		CSV=$(echo "$FILE" | sed 's/.xlsx/.csv/' )
-		echo "CONVERTIDO PARA : $CSV"
-		while read l
-		
-			do
-				echo "$l"
-			done < "$CSV"
-
-
+       CSV=$(echo "$FILE" | sed 's/.xlsx/.csv/' )
+       echo "CONVERTIDO PARA : $CSV"
+     while read l	
+     do
+       echo "$l"
+     done < "$CSV"
 }
 
 #GET_ROLES "$1"
