@@ -50,24 +50,39 @@ echo "Inicinado ... "
 echo "$X"
 
 GET_ROLES () {
+	
 	local SERVER='http://192.168.0.6'
 	local PORT='8080'
 	local ADDRESS=${SERVER}:${PORT}
 	local USERNAME='alvkennedy'
-	local PROJECT=$1
+	declare -g PROJECT=$1 
 	local PASSWORD='12345678'
 	local CURL=$(which curl)
 	local JQ=$(which jq)	
 	local ROLES=$("$CURL" -H "Accept: application/json" -u "$USERNAME":"$PASSWORD" -XGET \
 				"$ADDRESS"/rest/api/2/project/"$PROJECT"/role | "$JQ" '.' | grep -v "{" | grep -v "}" )
 	local NUM=$(echo "$ROLES" | wc -l)
-    #echo "Rules projeto $PROJECT" > $PWD/lista.csv && \
-    #echo "$ROLES" | tail -n "$NUM" | cut -d ':' -f'1,4' | sed  's/\ //g;s/\"//g;s/\:/,/;s/[,]$//' > $PWD/lista.csv
-    for (( i = 1; i < "$NUM"; i++ )); do
-    	echo "$ROLES" | tail -n "$NUM" | awk -F ":" '{printf $1}' | sed 's/\ //g;s/\"//;s/\"/,/g;s/\,//;s/[\,]$//'  > $PWD/lista.csv
-    	
-    done
     
+    	for (( i = 1; i < "$NUM"; i++ )); do
+    		echo "$ROLES" | tail -n "$NUM" | awk -F ':' '{printf $1}' | sed 's/\ //g;s/\"//;s/\"/,/g;s/\,//;s/[\,]$/\n&/;s/[,]$//' > $PWD/lista.csv
+    		echo -e "\n$ROLES" | tail -n "$NUM" | awk -F '/' '{printf $NF}' | sed 's/\"//g' >> $PWD/lista.csv
+    	done
+
+    	if [[ "$(which figlet)" ]]; then
+    		figlet "TERMINADO :)"
+    	else 
+    		echo "TERMINADO :) "
+    	fi
+
+}
+
+GET_ROLES_FROM_CSV (){
+	
+	local FILE="$1"
+
+		#for i in "$FILE".xlsx; do  libreoffice --headless --convert-to csv "$i" ; done
+
 }
 
 GET_ROLES "$1"
+GET_ROLES_FROM_CSV "$1"
