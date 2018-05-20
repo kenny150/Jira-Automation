@@ -8,16 +8,22 @@ DEBIAN : sudo apt-get install jq postman curl which figlet
 
 REDHAT : sudo yum install jq postman curl which figlet
 
+# CHANGELOG
+
+# VERSÃO 1.0.1
+# Alterado método de entrada e saída do xlsx
+
+
 # VERSÃO 1.0.0
 
-Função GET_ROLES
+# Adicionado função GET_ROLES
 
-Recebe a "key" de um parâmetro do jira dinâmicamente e a partir dela faz uma busca das roles que o projeto pertence.
+Descrição : Recebe a "key" de um parâmetro do jira dinâmicamente e a partir dela faz uma busca das roles que o projeto pertence.
 
-Função GET_ROLES_FROM_CSV
+# Adicionado função GET_ROLES_FROM_CSV
 
-Recebe via parametro a localização do arquivo xlsx e o converte para .csv .
+Descrição : Recebe via parametro a localização do arquivo xlsx e o converte para .csv .
 
-Função GET_PACKAGES
+# Adicionado função GET_PACKAGES
 
-Verifica seu sistema operacional e instala os pacotes necessários, adicionando também o postman (não obrigatório) mas util para teste de coletas caso queira alterar o programa e adaptar a sua necessidade.
+Descrição : Verifica seu sistema operacional e instala os pacotes necessários, adicionando também o postman (não obrigatório) mas util para teste de coletas caso queira alterar o programa e adaptar a sua necessidade.
