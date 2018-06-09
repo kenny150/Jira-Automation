@@ -72,18 +72,37 @@ GET_ROLES () {
     fi
 }
 
-GET_ROLES_FROM_CSV (){	
-  local FILE="$1"
+CONVERT_XLS_TO_CSV (){	
+  declare -g FILE="$1"
 
-     for i in "$FILE"; do  libreoffice --headless --convert-to csv "$i" ; done
-		
-       CSV=$(echo "$FILE" | sed 's/.xlsx/.csv/' )
-       echo "CONVERTIDO PARA : $CSV"
-     while read l	
+     ssconvert "$FILE" ${FILE}.csv
+
+     [[ -f ${FILE}.csv ]] && echo "Arquivo ${CSV} convertido com sucesso" || echo "Algo deu errado" ;
+	
+     while read l
      do
-       echo "$l"
-     done < "$CSV"
+      echo "$l"
+     done < "$FILE".csv
+}
+
+REPLACE_CSV () {
+	
+  local EXPORTED_CSV="$1"
+
+  while read n
+    do
+      s=,$(echo $n | awk -F ',' '{print $1}') 
+      source=$(echo ${s} | sed 's/"//g')
+      r=,$(echo "$n" | awk -F ',' '{print $5}')
+      set -x
+      sed -i "s|${source}|${r}|g" ${EXPORTED_CSV}
+      set +x
+      [[ $? -eq 0 ]] && echo "Alteração realizada" || echo "Não substituido" ;
+    done < Relatorios-Jira_NOVOMODELO_Sprints.xlsx.csv
+
 }
 
 #GET_ROLES "$1"
-GET_ROLES_FROM_CSV "$1"
+#CONVERT_XLS_TO_CSV "$1"
+REPLACE_CSV "$1"
+#REPLACE_CSV "$1"
